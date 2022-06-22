@@ -233,11 +233,11 @@ export default class ColorConvert {
     if (spaceSeparated) {
       return `hsl(${this.#hue2UnitString(hueUnit)} ${ColorConvert.#roundTwoDecimals(this.saturation * 100)}% ${ColorConvert.#roundTwoDecimals(this.lightness * 100)}%${this.alpha === 1 && omitAlphaOnFullOpacity ? '' : ` / ${alphaInPercent ? `${this.#alpha * 100}%` : this.alpha}`})`
     }
-    return `hsl(${this.#hue2UnitString(hueUnit)}, ${ColorConvert.#roundTwoDecimals(this.saturation * 100)}%, ${ColorConvert.#roundTwoDecimals(this.lightness * 100)}%`
+    return `hsl(${this.#hue2UnitString(hueUnit)}, ${ColorConvert.#roundTwoDecimals(this.saturation * 100)}%, ${ColorConvert.#roundTwoDecimals(this.lightness * 100)}%)`
   }
 
   toHsla ({ hueUnit = 'deg' }: { hueUnit?: 'deg'|'rad'|'grad'|'turn' } = {}): string {
-    return `hsl(${this.#hue2UnitString(hueUnit)}, ${ColorConvert.#roundTwoDecimals(this.saturation * 100)}%, ${ColorConvert.#roundTwoDecimals(this.lightness * 100)}%, ${ColorConvert.#roundTwoDecimals(this.alpha)}`
+    return `hsl(${this.#hue2UnitString(hueUnit)}, ${ColorConvert.#roundTwoDecimals(this.saturation * 100)}%, ${ColorConvert.#roundTwoDecimals(this.lightness * 100)}%, ${ColorConvert.#roundTwoDecimals(this.alpha)})`
   }
 
   #getHsl (): [number, number, number] {

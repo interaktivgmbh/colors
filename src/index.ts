@@ -372,5 +372,19 @@ export default class ColorConvert {
   static isHslString = (str: string): boolean => ColorConvert.#HSL_STRING_REGEX.test(str)
   static isCssColorName = (str: string): boolean => str in ColorConvert.#CSS_COLORS
 
-  static #roundTwoDecimals = (input: number): number => Math.round((input + Number.EPSILON) * 100) / 100
+  static #roundTwoDecimals = (input: number): number => Math.round((input + Number.EPSILON) * 100) / 100;
+
+  [Symbol.toPrimitive] <H extends 'number'|'string'|'default'> (hint: H): H extends 'number' ? number : H extends 'string' ? string : boolean {
+    if (hint === 'number') {
+      return parseInt(this.toHex({ preferShortNotation: false, omitAlphaOnFullOpacity: false })) as H extends 'number' ? number : H extends 'string' ? string : boolean
+    } else if (hint === 'string') {
+      return this.toHsl({ omitAlphaOnFullOpacity: false }) as H extends 'number' ? number : H extends 'string' ? string : boolean
+    } else {
+      return this.lightness > 0.5 as H extends 'number' ? number : H extends 'string' ? string : boolean
+    }
+  }
+
+  get [Symbol.toStringTag] (): string {
+    return 'ColorConvert'
+  }
 }

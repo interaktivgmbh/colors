@@ -77,112 +77,126 @@ class ColorConvert {
         if (spaceSeparated) {
             return `hsl(${__classPrivateFieldGet(this, _ColorConvert_instances, "m", _ColorConvert_hue2UnitString).call(this, hueUnit)} ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.saturation * 100)}% ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.lightness * 100)}%${this.alpha === 1 && omitAlphaOnFullOpacity ? '' : ` / ${alphaInPercent ? `${__classPrivateFieldGet(this, _ColorConvert_alpha, "f") * 100}%` : this.alpha}`})`;
         }
-        return `hsl(${__classPrivateFieldGet(this, _ColorConvert_instances, "m", _ColorConvert_hue2UnitString).call(this, hueUnit)}, ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.saturation * 100)}%, ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.lightness * 100)}%`;
+        return `hsl(${__classPrivateFieldGet(this, _ColorConvert_instances, "m", _ColorConvert_hue2UnitString).call(this, hueUnit)}, ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.saturation * 100)}%, ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.lightness * 100)}%)`;
     }
     toHsla({ hueUnit = 'deg' } = {}) {
-        return `hsl(${__classPrivateFieldGet(this, _ColorConvert_instances, "m", _ColorConvert_hue2UnitString).call(this, hueUnit)}, ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.saturation * 100)}%, ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.lightness * 100)}%, ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.alpha)}`;
+        return `hsl(${__classPrivateFieldGet(this, _ColorConvert_instances, "m", _ColorConvert_hue2UnitString).call(this, hueUnit)}, ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.saturation * 100)}%, ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.lightness * 100)}%, ${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.alpha)})`;
+    }
+    [(_ColorConvert_red = new WeakMap(), _ColorConvert_green = new WeakMap(), _ColorConvert_blue = new WeakMap(), _ColorConvert_alpha = new WeakMap(), _ColorConvert_hue = new WeakMap(), _ColorConvert_saturation = new WeakMap(), _ColorConvert_lightness = new WeakMap(), _ColorConvert_instances = new WeakSet(), _ColorConvert_getHsl = function _ColorConvert_getHsl() {
+        const [red, green, blue] = [
+            this.red / 0xff,
+            this.green / 0xff,
+            this.blue / 0xff
+        ];
+        const max = Math.max(red, green, blue);
+        const min = Math.min(red, green, blue);
+        const delta = max - min;
+        const light = (max + min) / 2;
+        const hue = delta === 0
+            ? 0
+            : max === red
+                ? 60 * (((green - blue) / delta) % 6)
+                : max === green
+                    ? 60 * (((blue - red) / delta) + 2)
+                    : 60 * (((red - green) / delta) + 4);
+        const sat = delta === 0
+            ? 0
+            : delta / (1 - Math.abs(2 * light - 1));
+        return [hue, sat, light];
+    }, _ColorConvert_hue2UnitString = function _ColorConvert_hue2UnitString(unit = 'deg') {
+        switch (unit) {
+            case 'rad':
+                return `${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.hue * Math.PI / 180)}rad`;
+            case 'grad':
+                return `${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.hue / 0.9)}grad`;
+            case 'turn':
+                return `${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.hue / 360)}turn`;
+            default:
+                return `${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.hue)}deg`;
+        }
+    }, _ColorConvert_parseRgb = function _ColorConvert_parseRgb(str) {
+        var _b, _c;
+        const match = (_c = (_b = str.match(__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_RGB_STRING_REGEX))) === null || _b === void 0 ? void 0 : _b.slice(1)) === null || _c === void 0 ? void 0 : _c.filter(it => it != null);
+        return match.length === 3
+            ? [...match.map(it => parseInt(it)), 1]
+            : [
+                ...match.slice(0, 3).map(it => parseInt(it)),
+                __classPrivateFieldGet(ColorConvert, _a, "m", _ColorConvert_alphaToFloat).call(ColorConvert, match[3])
+            ];
+    }, _ColorConvert_parseHex = function _ColorConvert_parseHex(str) {
+        var _b, _c, _d;
+        const match = (_d = (_c = (_b = str.match(__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_HEX_STRING_REGEX))) === null || _b === void 0 ? void 0 : _b.slice(1)) === null || _c === void 0 ? void 0 : _c.filter(it => it != null)) === null || _d === void 0 ? void 0 : _d.map(it => it.length < 2 ? `${it}${it}` : it);
+        return match.length === 3
+            ? [...match.map(it => parseInt(it, 16)), 1]
+            : match.map((it, idx) => idx === 3 ? parseInt(it, 16) / 0xff : parseInt(it, 16));
+    }, _ColorConvert_parseHsl = function _ColorConvert_parseHsl(str) {
+        var _b, _c;
+        const match = (_c = (_b = str.match(__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_HSL_STRING_REGEX))) === null || _b === void 0 ? void 0 : _b.slice(1)) === null || _c === void 0 ? void 0 : _c.filter(it => it != null);
+        const hue = __classPrivateFieldGet(ColorConvert, _a, "m", _ColorConvert_hueToFloat).call(ColorConvert, match[0]);
+        const sat = parseFloat(match[1]) / 100;
+        const light = parseFloat(match[2]) / 100;
+        const alpha = match[3] != null ? __classPrivateFieldGet(ColorConvert, _a, "m", _ColorConvert_alphaToFloat).call(ColorConvert, match[3]) : 1;
+        const c = (1 - Math.abs(2 * light - 1)) * sat;
+        const x = c * (1 - Math.abs((hue / 60) % 2 - 1));
+        const m = light - c / 2;
+        const [red, green, blue] = hue < 60
+            ? [c, x, 0]
+            : hue < 120
+                ? [x, c, 0]
+                : hue < 180
+                    ? [0, c, x]
+                    : hue < 240
+                        ? [0, x, c]
+                        : hue < 300
+                            ? [x, 0, c]
+                            : [c, 0, x];
+        return [
+            (red + m) * 0xff,
+            (green + m) * 0xff,
+            (blue + m) * 0xff,
+            alpha
+        ];
+    }, _ColorConvert_parseCssColor = function _ColorConvert_parseCssColor(str) {
+        return __classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_CSS_COLORS)[str];
+    }, _ColorConvert_alphaToFloat = function _ColorConvert_alphaToFloat(alpha) {
+        return alpha.charAt(-1) === '%'
+            ? parseFloat(alpha.slice(0, -1)) / 100
+            : parseFloat(alpha);
+    }, _ColorConvert_hueToFloat = function _ColorConvert_hueToFloat(hue) {
+        let deg;
+        if (/deg$/.test(hue)) {
+            deg = parseFloat(hue.slice(0, -3));
+        }
+        else if (/grad$/.test(hue)) {
+            deg = parseFloat(hue.slice(0, -4)) * 0.9;
+        }
+        else if (/rad$/.test(hue)) {
+            deg = parseFloat(hue.slice(0, -3)) / Math.PI * 180;
+        }
+        else if (/turn$/.test(hue)) {
+            deg = parseFloat(hue.slice(0, -4)) * 360;
+        }
+        else {
+            deg = parseInt(hue);
+        }
+        return deg % 360;
+    }, Symbol.toPrimitive)](hint) {
+        if (hint === 'number') {
+            return parseInt(this.toHex({ preferShortNotation: false, omitAlphaOnFullOpacity: false }));
+        }
+        else if (hint === 'string') {
+            return this.toHsl({ omitAlphaOnFullOpacity: false });
+        }
+        else {
+            return this.lightness > 0.5;
+        }
+    }
+    get [Symbol.toStringTag]() {
+        return 'ColorConvert';
     }
 }
 exports.default = ColorConvert;
-_a = ColorConvert, _ColorConvert_red = new WeakMap(), _ColorConvert_green = new WeakMap(), _ColorConvert_blue = new WeakMap(), _ColorConvert_alpha = new WeakMap(), _ColorConvert_hue = new WeakMap(), _ColorConvert_saturation = new WeakMap(), _ColorConvert_lightness = new WeakMap(), _ColorConvert_instances = new WeakSet(), _ColorConvert_getHsl = function _ColorConvert_getHsl() {
-    const [red, green, blue] = [
-        this.red / 0xff,
-        this.green / 0xff,
-        this.blue / 0xff
-    ];
-    const max = Math.max(red, green, blue);
-    const min = Math.min(red, green, blue);
-    const delta = max - min;
-    const light = (max + min) / 2;
-    const hue = delta === 0
-        ? 0
-        : max === red
-            ? 60 * (((green - blue) / delta) % 6)
-            : max === green
-                ? 60 * (((blue - red) / delta) + 2)
-                : 60 * (((red - green) / delta) + 4);
-    const sat = delta === 0
-        ? 0
-        : delta / (1 - Math.abs(2 * light - 1));
-    return [hue, sat, light];
-}, _ColorConvert_hue2UnitString = function _ColorConvert_hue2UnitString(unit = 'deg') {
-    switch (unit) {
-        case 'rad':
-            return `${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.hue * Math.PI / 180)}rad`;
-        case 'grad':
-            return `${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.hue / 0.9)}grad`;
-        case 'turn':
-            return `${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.hue / 360)}turn`;
-        default:
-            return `${__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_roundTwoDecimals).call(ColorConvert, this.hue)}deg`;
-    }
-}, _ColorConvert_parseRgb = function _ColorConvert_parseRgb(str) {
-    var _b, _c;
-    const match = (_c = (_b = str.match(__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_RGB_STRING_REGEX))) === null || _b === void 0 ? void 0 : _b.slice(1)) === null || _c === void 0 ? void 0 : _c.filter(it => it != null);
-    return match.length === 3
-        ? [...match.map(it => parseInt(it)), 1]
-        : [
-            ...match.slice(0, 3).map(it => parseInt(it)),
-            __classPrivateFieldGet(ColorConvert, _a, "m", _ColorConvert_alphaToFloat).call(ColorConvert, match[3])
-        ];
-}, _ColorConvert_parseHex = function _ColorConvert_parseHex(str) {
-    var _b, _c, _d;
-    const match = (_d = (_c = (_b = str.match(__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_HEX_STRING_REGEX))) === null || _b === void 0 ? void 0 : _b.slice(1)) === null || _c === void 0 ? void 0 : _c.filter(it => it != null)) === null || _d === void 0 ? void 0 : _d.map(it => it.length < 2 ? `${it}${it}` : it);
-    return match.length === 3
-        ? [...match.map(it => parseInt(it, 16)), 1]
-        : match.map((it, idx) => idx === 3 ? parseInt(it, 16) / 0xff : parseInt(it, 16));
-}, _ColorConvert_parseHsl = function _ColorConvert_parseHsl(str) {
-    var _b, _c;
-    const match = (_c = (_b = str.match(__classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_HSL_STRING_REGEX))) === null || _b === void 0 ? void 0 : _b.slice(1)) === null || _c === void 0 ? void 0 : _c.filter(it => it != null);
-    const hue = __classPrivateFieldGet(ColorConvert, _a, "m", _ColorConvert_hueToFloat).call(ColorConvert, match[0]);
-    const sat = parseFloat(match[1]) / 100;
-    const light = parseFloat(match[2]) / 100;
-    const alpha = match[3] != null ? __classPrivateFieldGet(ColorConvert, _a, "m", _ColorConvert_alphaToFloat).call(ColorConvert, match[3]) : 1;
-    const c = (1 - Math.abs(2 * light - 1)) * sat;
-    const x = c * (1 - Math.abs((hue / 60) % 2 - 1));
-    const m = light - c / 2;
-    const [red, green, blue] = hue < 60
-        ? [c, x, 0]
-        : hue < 120
-            ? [x, c, 0]
-            : hue < 180
-                ? [0, c, x]
-                : hue < 240
-                    ? [0, x, c]
-                    : hue < 300
-                        ? [x, 0, c]
-                        : [c, 0, x];
-    return [
-        (red + m) * 0xff,
-        (green + m) * 0xff,
-        (blue + m) * 0xff,
-        alpha
-    ];
-}, _ColorConvert_parseCssColor = function _ColorConvert_parseCssColor(str) {
-    return __classPrivateFieldGet(ColorConvert, _a, "f", _ColorConvert_CSS_COLORS)[str];
-}, _ColorConvert_alphaToFloat = function _ColorConvert_alphaToFloat(alpha) {
-    return alpha.charAt(-1) === '%'
-        ? parseFloat(alpha.slice(0, -1)) / 100
-        : parseFloat(alpha);
-}, _ColorConvert_hueToFloat = function _ColorConvert_hueToFloat(hue) {
-    let deg;
-    if (/deg$/.test(hue)) {
-        deg = parseFloat(hue.slice(0, -3));
-    }
-    else if (/grad$/.test(hue)) {
-        deg = parseFloat(hue.slice(0, -4)) * 0.9;
-    }
-    else if (/rad$/.test(hue)) {
-        deg = parseFloat(hue.slice(0, -3)) / Math.PI * 180;
-    }
-    else if (/turn$/.test(hue)) {
-        deg = parseFloat(hue.slice(0, -4)) * 360;
-    }
-    else {
-        deg = parseInt(hue);
-    }
-    return deg % 360;
-};
+_a = ColorConvert;
 _ColorConvert_RGB_STRING_REGEX = { value: /^rgb\( *(\d{1,2}|1\d{2}|2[0-4]\d|25[0-5]) +(\d{1,2}|1\d{2}|2[0-4]\d|25[0-5]) +(\d{1,2}|1\d{2}|2[0-4]\d|25[0-5]) *(\/ *(?:\d{1,2}|100)%)?\)|rgb\( *(\d{1,2}|1\d{2}|2[0-4]\d|25[0-5]) *, *(\d{1,2}|1\d{2}|2[0-4]\d|25[0-5]) *, *(\d{1,2}|1\d{2}|2[0-4]\d|25[0-5]) *\)|rgba\( *(\d{1,2}|1\d{2}|2[0-4]\d25[0-5]) *, *(\d{1,2}|1\d{2}|2[0-4]\d25[0-5]) *, *(\d{1,2}|1\d{2}|2[0-4]\d25[0-5]) *, *(0?\.\d+|1(?:\.0+)?) *\)$/ };
 _ColorConvert_HEX_STRING_REGEX = { value: /^#(?:([\da-f])([\da-f])([\da-f])([\da-f])?|([\da-f]{2})([\da-f]{2})([\da-f]{2})([\da-f]{2})?)$/ };
 _ColorConvert_HSL_STRING_REGEX = { value: /^hsl\( *(-?(?:\d+(?:\.\d+)?|0?\.\d+)(?:deg|g?rad|turn)?) *, *(\d{1,2}(?:\.\d+)?|100)% *, *(\d{1,2}(?:\.\d+)?|100)%*\)|hsla\( *(-?(?:\d+(?:\.\d+)?|0?\.\d+)(?:deg|g?rad|turn)?) *, *(\d{1,2}(?:\.\d+)?|100)% *, *(\d{1,2}(?:\.\d+)?|100)% *, *(0?\.\d+|1(?:\.0+)) *\)|hsl\( *(-?(?:\d+(?:\.\d+)?|0?\.\d+)(?:deg|g?rad|turn)?) +(\d{1,2}(?:\.\d+)?|100)% +(\d{1,2}(?:\.\d+)?|100)%(?: *| *\/ *((?:\d{1,2}(?:\.\d+)?|100)%|1(?:\.0+)?|0?\.\d+) *)\)$/ };

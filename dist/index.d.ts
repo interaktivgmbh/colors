@@ -37,4 +37,6 @@ export default class ColorConvert {
     static isHexString: (str: string) => boolean;
     static isHslString: (str: string) => boolean;
     static isCssColorName: (str: string) => boolean;
+    [Symbol.toPrimitive]<H extends 'number' | 'string' | 'default'>(hint: H): H extends 'number' ? number : H extends 'string' ? string : boolean;
+    get [Symbol.toStringTag](): string;
 }

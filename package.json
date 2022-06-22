@@ -1,0 +1,16 @@
+{
+  "name": "color-convert",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "Mike Kühnapfel <kuehnapfel@interaktiv.de>",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "ts-standard": "^11.0.0",
+    "typescript": "^4.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://code.interaktiv.de/mkuehnapfel/color-converter.git"
+  }
+}

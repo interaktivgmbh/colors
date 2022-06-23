@@ -5,12 +5,17 @@
   "author": "Mike Kühnapfel <kuehnapfel@interaktiv.de>",
   "license": "UNLICENSED",
   "private": true,
-  "devDependencies": {
-    "ts-standard": "^11.0.0",
+  "dependencies": {
     "typescript": "^4.7.3"
+  },
+  "devDependencies": {
+    "ts-standard": "^11.0.0"
   },
   "repository": {
     "type": "git",
     "url": "https://code.interaktiv.de/mkuehnapfel/color-converter.git"
+  },
+  "scripts": {
+    "postinstall": "tsc"
   }
 }

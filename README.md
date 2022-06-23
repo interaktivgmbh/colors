@@ -30,5 +30,5 @@ const color = new Color('#ff6f61');
     .forEach(element => element.style.color = color.hsl)
 
 // function that checks whether the input color (string) is light
-const isColorLight = (color: string): boolean => (new Color(color)).lightness > 0.5
+const isColorLight = (color: string): boolean => (new Color(color)).luminance > 0.5
 ```

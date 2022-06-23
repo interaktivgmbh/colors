@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added README
 - Post install script to automatically transpile typescript code
 
+### Changed
+- Added dist/ directory to `.gitignore`
+
 ## [1.0.0] - 2022-06-22
 ### Added
 - `red` attribute, showing the rgb red value as a float (1..255)

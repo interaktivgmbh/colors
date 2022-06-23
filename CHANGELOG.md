@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added this changelog
 - Added README
 - Post install script to automatically transpile typescript code
+- `luminance` attribute, showing the relative lumincance as a float (0..1)
+- `calculateLuminance` method, calculating the relative luminance according to diffrent lumincane algorithms
+- `LuminanceAlgorithm` enum
+  - `LINEAR_RGB = 0` [Standard algorithm to calculate relative luminance for linear rgb](https://en.wikipedia.org/wiki/Relative_luminance#Relative_luminance_and_%22gamma_encoded%22_colorspaces)
+  - `W3C_AERT = 1` [Algorithm to calculate ralative luminance according to W3Cs Working Draft for AERT](https://www.w3.org/TR/AERT/#color-contrast)
+  - `HSP = 2` [Algorithm to calculate brightness in HSP color space](https://alienryderflex.com/hsp.html)
 
 ### Changed
 - Added dist/ directory to `.gitignore`

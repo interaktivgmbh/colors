@@ -180,6 +180,8 @@ export default class ColorConvert {
   get hsl (): string { return this.toHsl() }
   get hsla (): string { return this.toHsla() }
 
+  get luminance (): number { return this.calculateLuminance() }
+
   constructor (input: string) {
     if (ColorConvert.isRgbString(input)) {
       [this.#red, this.#green, this.#blue, this.#alpha] = ColorConvert.#parseRgb(input)
@@ -238,6 +240,17 @@ export default class ColorConvert {
 
   toHsla ({ hueUnit = 'deg' }: { hueUnit?: 'deg'|'rad'|'grad'|'turn' } = {}): string {
     return `hsl(${this.#hue2UnitString(hueUnit)}, ${ColorConvert.#roundTwoDecimals(this.saturation * 100)}%, ${ColorConvert.#roundTwoDecimals(this.lightness * 100)}%, ${ColorConvert.#roundTwoDecimals(this.alpha)})`
+  }
+
+  calculateLuminance (algorithm: LuminanceAlgorithm = LuminanceAlgorithm.LINEAR_RGB): number {
+    switch (algorithm) {
+      case LuminanceAlgorithm.LINEAR_RGB:
+        return (0.2126 * this.red + 0.7152 * this.green + 0.0722 * this.blue) / 0xff
+      case LuminanceAlgorithm.W3C_AERT:
+        return (0.299 * this.red + 0.587 * this.green + 0.114 * this.blue) / 0xff
+      case LuminanceAlgorithm.HSP:
+        return Math.sqrt(0.299 * this.red ** 2 + 0.587 * this.green ** 2 + 0.114 * this.blue ** 2) / 0xff
+    }
   }
 
   #getHsl (): [number, number, number] {
@@ -387,4 +400,16 @@ export default class ColorConvert {
   get [Symbol.toStringTag] (): string {
     return 'ColorConvert'
   }
+}
+
+/**
+ * Enum that corresponds to diffrent luminance calculating algorithms
+ * @property LINEAR_RGB - {@link https://en.wikipedia.org/wiki/Relative_luminance#Relative_luminance_and_%22gamma_encoded%22_colorspaces|Standard algorithm to calculate relative luminance for linear rgb}
+ * @property W3C_AERT - {@link https://www.w3.org/TR/AERT/#color-contrast|Algorithm to calculate ralative luminance according to W3Cs Working Draft for AERT}
+ * @property HSP - {@link https://alienryderflex.com/hsp.html|Algorithm to calculate brightness in HSP color space}
+ */
+export enum LuminanceAlgorithm {
+  LINEAR_RGB,
+  W3C_AERT,
+  HSP
 }

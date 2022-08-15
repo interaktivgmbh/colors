@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Setter for attribute `green`
 - Setter for attribute `blue`
 - Setter for attribute `alpha`
+- Private static method `#hslToRgb`
+
+### Changed
+- Private static method `#parseHsl` now uses new private static method `#hslToRgb`
 
 ## [1.1.0] - 2022-06-23
 ### Added

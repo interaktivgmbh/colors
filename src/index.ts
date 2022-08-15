@@ -344,16 +344,7 @@ export default class ColorConvert {
       : match.map((it, idx) => idx === 3 ? parseInt(it, 16) / 0xff : parseInt(it, 16)) as RgbaValues
   }
 
-  static #parseHsl (str: string): RgbaValues {
-    const match = str.match(ColorConvert.#HSL_STRING_REGEX)
-      ?.slice(1)
-      ?.filter(it => it != null) as RegExResult
-
-    const hue = ColorConvert.#hueToFloat(match[0])
-    const sat = parseFloat(match[1]) / 100
-    const light = parseFloat(match[2]) / 100
-    const alpha = match[3] != null ? ColorConvert.#alphaToFloat(match[3]) : 1
-
+  static #hslToRgb (hue: number, sat: number, light: number): [number, number, number] {
     const c = (1 - Math.abs(2 * light - 1)) * sat
     const x = c * (1 - Math.abs((hue / 60) % 2 - 1))
     const m = light - c / 2
@@ -374,7 +365,22 @@ export default class ColorConvert {
     return [
       (red + m) * 0xff,
       (green + m) * 0xff,
-      (blue + m) * 0xff,
+      (blue + m) * 0xff
+    ]
+  }
+
+  static #parseHsl (str: string): RgbaValues {
+    const match = str.match(ColorConvert.#HSL_STRING_REGEX)
+      ?.slice(1)
+      ?.filter(it => it != null) as RegExResult
+
+    const hue = ColorConvert.#hueToFloat(match[0])
+    const sat = parseFloat(match[1]) / 100
+    const light = parseFloat(match[2]) / 100
+    const alpha = match[3] != null ? ColorConvert.#alphaToFloat(match[3]) : 1
+
+    return [
+      ...ColorConvert.#hslToRgb(hue, sat, light),
       alpha
     ]
   }

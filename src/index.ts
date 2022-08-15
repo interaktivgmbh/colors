@@ -165,9 +165,36 @@ export default class ColorConvert {
   #lightness: number
 
   get red (): number { return this.#red }
+  set red (newValue: number) {
+    if (newValue < 0 || newValue > 255) throw new SyntaxError('"red" must be an integer between 0 and 255')
+
+    this.#red = newValue;
+    [this.#hue, this.#saturation, this.#lightness] = this.#getHsl()
+  }
+
   get green (): number { return this.#green }
+  set green (newValue: number) {
+    if (newValue < 0 || newValue > 255) throw new SyntaxError('"green" must be an integer between 0 and 255')
+
+    this.#green = newValue;
+    [this.#hue, this.#saturation, this.#lightness] = this.#getHsl()
+  }
+
   get blue (): number { return this.#blue }
+  set blue (newValue: number) {
+    if (newValue < 0 || newValue > 255) throw new SyntaxError('"blue" must be an integer between 0 and 255')
+
+    this.#blue = newValue;
+    [this.#hue, this.#saturation, this.#lightness] = this.#getHsl()
+  }
+
   get alpha (): number { return this.#alpha }
+  set alpha (newValue: number) {
+    if (newValue < 0 || newValue > 1) throw new SyntaxError('"alpha" must be a float between 0 and 1')
+
+    this.#alpha = newValue;
+    [this.#hue, this.#saturation, this.#lightness] = this.#getHsl()
+  }
 
   get hue (): number { return this.#hue }
   get saturation (): number { return this.#saturation }

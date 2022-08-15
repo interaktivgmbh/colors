@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Setter for attribute `blue`
 - Setter for attribute `alpha`
 - Private static method `#hslToRgb`
+- Setter for attribute `hue`
+- Setter for attribute `saturation`
+- Setter for attribute `lightness`
 
 ### Changed
 - Private static method `#parseHsl` now uses new private static method `#hslToRgb`

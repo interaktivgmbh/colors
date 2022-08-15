@@ -197,8 +197,28 @@ export default class ColorConvert {
   }
 
   get hue (): number { return this.#hue }
+  set hue (newValue: number) {
+    if (newValue < 0 || newValue > 360) throw new SyntaxError('"hue" must be a float between 0 and 360')
+
+    this.#hue = newValue;
+    [this.#red, this.#green, this.#blue] = ColorConvert.#hslToRgb(this.#hue, this.#saturation, this.#lightness)
+  }
+
   get saturation (): number { return this.#saturation }
+  set saturation (newValue: number) {
+    if (newValue < 0 || newValue > 360) throw new SyntaxError('"saturation" must be a float between 0 and 360')
+
+    this.#saturation = newValue;
+    [this.#red, this.#green, this.#blue] = ColorConvert.#hslToRgb(this.#hue, this.#saturation, this.#lightness)
+  }
+
   get lightness (): number { return this.#lightness }
+  set lightness (newValue: number) {
+    if (newValue < 0 || newValue > 360) throw new SyntaxError('"lightness" must be a float between 0 and 360')
+
+    this.#lightness = newValue;
+    [this.#red, this.#green, this.#blue] = ColorConvert.#hslToRgb(this.#hue, this.#saturation, this.#lightness)
+  }
 
   get rgb (): string { return this.toRgb() }
   get rgba (): string { return this.toRgba() }

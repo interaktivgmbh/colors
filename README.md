@@ -1,7 +1,7 @@
 # Color Convert
 
 [![code style: ts-standard](https://img.shields.io/badge/code%20style-ts--standard-blue)](https://standardjs.com/)
-![Version: 1.1.0](https://img.shields.io/badge/version-1.1.0-242424)
+![Version: 1.2.0](https://img.shields.io/badge/version-1.2.0-242424)
 
 Simple color converter for JavaScript.
 

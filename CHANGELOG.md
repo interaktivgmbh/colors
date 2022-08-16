@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2022-08-16
+### Added
+- Setter for attribute `red`
+- Setter for attribute `green`
+- Setter for attribute `blue`
+- Setter for attribute `alpha`
+- Private static method `#hslToRgb`
+- Setter for attribute `hue`
+- Setter for attribute `saturation`
+- Setter for attribute `lightness`
+
+### Changed
+- Private static method `#parseHsl` now uses new private static method `#hslToRgb`
+
 ## [1.1.0] - 2022-06-23
 ### Added
 - Added this changelog

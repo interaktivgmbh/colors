@@ -165,13 +165,60 @@ export default class ColorConvert {
   #lightness: number
 
   get red (): number { return this.#red }
+  set red (newValue: number) {
+    if (newValue < 0 || newValue > 255) throw new SyntaxError('"red" must be an integer between 0 and 255')
+
+    this.#red = newValue;
+    [this.#hue, this.#saturation, this.#lightness] = this.#getHsl()
+  }
+
   get green (): number { return this.#green }
+  set green (newValue: number) {
+    if (newValue < 0 || newValue > 255) throw new SyntaxError('"green" must be an integer between 0 and 255')
+
+    this.#green = newValue;
+    [this.#hue, this.#saturation, this.#lightness] = this.#getHsl()
+  }
+
   get blue (): number { return this.#blue }
+  set blue (newValue: number) {
+    if (newValue < 0 || newValue > 255) throw new SyntaxError('"blue" must be an integer between 0 and 255')
+
+    this.#blue = newValue;
+    [this.#hue, this.#saturation, this.#lightness] = this.#getHsl()
+  }
+
   get alpha (): number { return this.#alpha }
+  set alpha (newValue: number) {
+    if (newValue < 0 || newValue > 1) throw new SyntaxError('"alpha" must be a float between 0 and 1')
+
+    this.#alpha = newValue;
+    [this.#hue, this.#saturation, this.#lightness] = this.#getHsl()
+  }
 
   get hue (): number { return this.#hue }
+  set hue (newValue: number) {
+    if (newValue < 0 || newValue > 360) throw new SyntaxError('"hue" must be a float between 0 and 360')
+
+    this.#hue = newValue;
+    [this.#red, this.#green, this.#blue] = ColorConvert.#hslToRgb(this.#hue, this.#saturation, this.#lightness)
+  }
+
   get saturation (): number { return this.#saturation }
+  set saturation (newValue: number) {
+    if (newValue < 0 || newValue > 360) throw new SyntaxError('"saturation" must be a float between 0 and 360')
+
+    this.#saturation = newValue;
+    [this.#red, this.#green, this.#blue] = ColorConvert.#hslToRgb(this.#hue, this.#saturation, this.#lightness)
+  }
+
   get lightness (): number { return this.#lightness }
+  set lightness (newValue: number) {
+    if (newValue < 0 || newValue > 360) throw new SyntaxError('"lightness" must be a float between 0 and 360')
+
+    this.#lightness = newValue;
+    [this.#red, this.#green, this.#blue] = ColorConvert.#hslToRgb(this.#hue, this.#saturation, this.#lightness)
+  }
 
   get rgb (): string { return this.toRgb() }
   get rgba (): string { return this.toRgba() }
@@ -317,16 +364,7 @@ export default class ColorConvert {
       : match.map((it, idx) => idx === 3 ? parseInt(it, 16) / 0xff : parseInt(it, 16)) as RgbaValues
   }
 
-  static #parseHsl (str: string): RgbaValues {
-    const match = str.match(ColorConvert.#HSL_STRING_REGEX)
-      ?.slice(1)
-      ?.filter(it => it != null) as RegExResult
-
-    const hue = ColorConvert.#hueToFloat(match[0])
-    const sat = parseFloat(match[1]) / 100
-    const light = parseFloat(match[2]) / 100
-    const alpha = match[3] != null ? ColorConvert.#alphaToFloat(match[3]) : 1
-
+  static #hslToRgb (hue: number, sat: number, light: number): [number, number, number] {
     const c = (1 - Math.abs(2 * light - 1)) * sat
     const x = c * (1 - Math.abs((hue / 60) % 2 - 1))
     const m = light - c / 2
@@ -347,7 +385,22 @@ export default class ColorConvert {
     return [
       (red + m) * 0xff,
       (green + m) * 0xff,
-      (blue + m) * 0xff,
+      (blue + m) * 0xff
+    ]
+  }
+
+  static #parseHsl (str: string): RgbaValues {
+    const match = str.match(ColorConvert.#HSL_STRING_REGEX)
+      ?.slice(1)
+      ?.filter(it => it != null) as RegExResult
+
+    const hue = ColorConvert.#hueToFloat(match[0])
+    const sat = parseFloat(match[1]) / 100
+    const light = parseFloat(match[2]) / 100
+    const alpha = match[3] != null ? ColorConvert.#alphaToFloat(match[3]) : 1
+
+    return [
+      ...ColorConvert.#hslToRgb(hue, sat, light),
       alpha
     ]
   }

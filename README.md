@@ -1,34 +1,34 @@
-# Color Convert
+# Interaktiv Colors
 
 [![code style: ts-standard](https://img.shields.io/badge/code%20style-ts--standard-blue)](https://standardjs.com/)
 ![Version: 1.2.0](https://img.shields.io/badge/version-1.2.0-242424)
 
-Simple color converter for JavaScript.
-
+Color converter for JavaScript/TypeScript.
 
 ## Installation
-
 ```shell
 # using yarn
-yarn add git+ssh://git@code.interaktiv.de:mkuehnapfel/color-converter.git
+$ yarn add @interaktiv.de/colors
 
 # using npm
-npm i -S git+ssh://git@code.interaktiv.de:mkuehnapfel/color-converter.git
+$ npm i -S @interaktiv.de/colors
 ```
 
-
 ## Usage
+```ts
+import Color from '@interaktiv/colors'
 
-```typescript
-import ColorConvert as Color from 'color-convert'
-
-// Create new instance of ColorConvert with hex code #ff6f61
+// Create new instance of Colors with hex code #ff6f61
 const color = new Color('#ff6f61');
 
-// set text color of all elements with calss "coral" to "hsl(5.32deg 100% 69.02%)"
+// set text color of all elements with class "coral" to hsl-string of color
 [...document.querySelectorAll('.coral')]
-    .forEach(element => element.style.color = color.hsl)
+  .forEach(element => element.style.color = color.hsl)
 
-// function that checks whether the input color (string) is light
-const isColorLight = (color: string): boolean => (new Color(color)).luminance > 0.5
+// function that checks whether the input color is light
+const isColorLight = (color: Color|string): boolean => {
+  if (color instanceof Color) return color.luminance > 0.5
+  
+  return (new Color(color).lumincance) > 0.5
+}
 ```

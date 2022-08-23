@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2022-08-23
+### Added
+- `LICENSE` file
+
+### Changed 
+- `README.md`
+- `package.json`
+- Moved helper types into own file (`src/types.d.ts`)
+- removed comments from `tsconfig.json`
+
 ## [1.2.0] - 2022-08-16
 ### Added
 - Setter for attribute `red`

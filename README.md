@@ -1,7 +1,7 @@
 # Interaktiv Colors
 
 [![code style: ts-standard](https://img.shields.io/badge/code%20style-ts--standard-blue)](https://standardjs.com/)
-![Version: 1.2.0](https://img.shields.io/badge/version-1.2.0-242424)
+![Version: 1.2.2](https://img.shields.io/badge/version-1.2.2-242424)
 
 Color converter for JavaScript/TypeScript.
 

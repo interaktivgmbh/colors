@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2023-02-03
+## Fixed
+- Made `ColorConvert` accept hex values in upper case
+
 ## [1.2.1] - 2022-08-23
 ### Added
 - `LICENSE` file
